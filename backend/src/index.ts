@@ -1,5 +1,3 @@
-// AIzaSyAG7tb5ukPxIpsP6ZIzU6i75ejxHhZrg3k
-
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -13,5 +11,5 @@ app.use(express.json());
 
 app.use("/review", reviewRouter);
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`ℹ️ Backend running on port ${PORT}`));
+const PORT = process.env.PORT || 8001;
+app.listen(PORT, () => console.log(`ℹ️\tBackend running on port ${PORT}`));
