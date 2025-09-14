@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/controllers/reviewcontroller.ts","./src/routes/review.ts","./src/services/aiservice.ts"],"version":"5.9.2"}
+{"root":["./src/index.ts","./src/controllers/getissuescontroller.ts","./src/controllers/reviewcontroller.ts","./src/routes/issues.ts","./src/routes/review.ts","./src/services/aiservice.ts"],"version":"5.9.2"}
