@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/review", reviewRouter);
-app.use("/webhook", issueRouter)
+app.use("/issues", issueRouter)
 
 const PORT = process.env.PORT || 8001;
 app.listen(PORT, () => console.log(`ℹ️\tBackend running on port ${PORT}`));

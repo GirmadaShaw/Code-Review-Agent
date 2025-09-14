@@ -6,11 +6,8 @@ dotenv.config();
 const owner = "GirmadaShaw";
 const repo = "Code-Review-Agent";
 
-const token = process.env.GITHUB_API_KEY ;
-console.log("Token in Issues: ", token );
-
 const octokit = new Octokit({
-  auth: token,
+  auth: process.env.GITHUB_API_KEY
 });
 
 export async function getIssues(req: Request, res: Response) {
