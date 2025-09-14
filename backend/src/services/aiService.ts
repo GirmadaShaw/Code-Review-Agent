@@ -32,3 +32,71 @@ Focus on:
                                                                         .replace(/^```json\s*|\s*```$/g, "")
                                                                         .slice(0, -4);
 }
+
+
+
+interface AIInput {
+  prNumber: number;
+  prMeta: { filename: string; patch: string }[];
+  linkedIssues: { issueNumber: number; title: string; body: string }[];
+}
+
+interface AIResponse {
+  summary: string;
+  findings: {
+    file: string;
+    line: number;
+    severity: "critical" | "high" | "medium" | "low";
+    comment: string;
+    suggestedFix?: string;
+  }[];
+}
+
+
+export const analyzePRWithAI = async (input: AIInput): Promise<AIResponse> => {
+  console.log(`ℹ️\tInvoking model: ${MODEL}`);
+  const prompt = `
+You are a senior software engineer who is assigned a task to review code. Your task is to analyze the following GitHub PR and provide actionable, concise feedback for each changed file. Do NOT repeat comments. Focus on code quality, security issues, maintainability, and whether the PR addresses the linked issues. Ignore the changes in the package.json or related file. But just mention whatever comment you want to give the summary only. 
+
+Format your output strictly as JSON in this exact structure:
+
+{
+  "summary": "Brief overall summary of the PR, including strengths and major issues.",
+  "findings": [
+    {
+      "file": "filename",
+      "line": 1,
+      "severity": "critical|high|medium|low",
+      "comment": "Concise advice for this file and line",
+      "suggestedFix": "Optional suggested fix"
+    }
+  ]
+}
+
+Inputs:
+PR Number: ${input.prNumber}
+Changed Files and Patches: ${JSON.stringify(input.prMeta)}
+Linked Issues: ${JSON.stringify(input.linkedIssues)}
+
+Provide output as JSON only. Do not include explanations outside of JSON.
+`;
+
+   const result = await model.generateContent(prompt);
+   const raw = result.response.candidates?.[0]?.content.parts.map(p => p.text).join("")
+                                                                        .replace(/^```json\s*|\s*```$/g, "")
+                                                                        .slice(0, -4);
+   let aiResponse: AIResponse;
+
+   if (raw) {
+   try {
+      aiResponse = JSON.parse(raw) as AIResponse;
+   } catch (err) {
+      console.error("❌\tFailed to parse AI response:", err);
+      aiResponse = { summary: "", findings: [] }; 
+   }
+   } else {
+      console.log("ℹ️\tUsing fallback. Couldn't parse raw response as json")
+   aiResponse = { summary: "", findings: [] };
+   }
+   return aiResponse;
+};
