@@ -11,6 +11,7 @@ interface AIInput {
 
 
 export const fetchOpenPRs = async (req: Request, res: Response) => {
+  console.log("ℹ️\tReceived request to fetch open PRs")
   try {
     const { token, owner, repo } = req.body;
 
@@ -27,6 +28,7 @@ export const fetchOpenPRs = async (req: Request, res: Response) => {
 };
 
 export const analyzePR = async (req: Request, res: Response) => {
+  console.log("ℹ️\tReceived request to analyze the PR")
   try {
     const { token, owner, repo, prNumber } = req.body;
 

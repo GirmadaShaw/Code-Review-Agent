@@ -2,6 +2,7 @@ import { postInlineComment } from "../services/githubService.js";
 import { Request, Response } from "express";
 
 export const postReviewComments = async (req: Request, res: Response) => {
+  console.log("ℹ️\tReceived request to send comments to the Repo")
   try {
     const { token, owner, repo, prNumber, headSha, aiResponse } = req.body;
 
