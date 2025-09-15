@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { convertSegmentPathToStaticExportFilename } from "next/dist/shared/lib/segment-cache/segment-value-encoding";
 
 interface Repo {
     name: string;
@@ -101,9 +102,14 @@ export default function RepoPage() {
 
     // Send comments automatically using headSha
     const sendComments = async () => {
-        if (!aiResponse || !selectedRepo || !selectedPR) return;
+        console.log("Token: ", token);
+        console.log("Ai Response: ", aiResponse);
+        console.log("selected Repo: ", selectedRepo);
+        console.log("Selected PR: ",selectedPR);
+        console.log(selectedPR?.headSha);
+        if (!aiResponse || !selectedRepo || !selectedPR) return ;
 
-        await fetch("/api/pr/send-comments", {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/pr/send-comments`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -159,7 +165,7 @@ export default function RepoPage() {
                         {prs.map((pr) => (
                             <div
                                 key={pr.number}
-                                className="border p-4 rounded-lg shadow hover:bg-gray-50 cursor-pointer"
+                                className="border p-4 rounded-lg shadow hover:bg-gray-90 cursor-pointer"
                                 onClick={() => analyzePR(pr)}
                             >
                                 <p>
@@ -177,16 +183,16 @@ export default function RepoPage() {
 
             {/* Step 3: Show AI Review */}
             {selectedPR && aiResponse && (
-                <div className="mt-6">
-                    <h2 className="text-2xl font-bold mb-4">AI Review for PR #{selectedPR.number}</h2>
-                    <div className="bg-gray-100 p-4 rounded-lg shadow mb-6">{aiResponse.summary}</div>
+                <div className="mt-6 p-4">
+                    <h2 className="text-3xl font-bold mb-4">AI Review for PR #{selectedPR.number}</h2>
+                    <div className="bg-gray-20 p-4 rounded-lg shadow mb-6">{aiResponse.summary}</div>
 
-                    <h3 className="text-xl font-semibold mb-2">File Findings</h3>
+                    <h3 className="text-2xl font-semibold mb-2">File Findings</h3>
                     <div className="space-y-4">
                         {aiResponse.findings.map((f, idx) => (
                             <div
                                 key={idx}
-                                className="border-l-4 p-4 rounded shadow hover:bg-gray-50 transition"
+                                className="border-l-4 p-4 rounded shadow hover:bg-gray-20 transition"
                             >
                                 <p>
                                     <strong>File:</strong> {f.file} | <strong>Line:</strong> {f.line} |{" "}
@@ -206,7 +212,7 @@ export default function RepoPage() {
 
                     <button
                         onClick={sendComments}
-                        className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition"
+                        className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition cursor-pointer"
                     >
                         Send Comments to your Repo
                     </button>

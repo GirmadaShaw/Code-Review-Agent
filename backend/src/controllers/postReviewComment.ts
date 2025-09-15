@@ -22,7 +22,7 @@ export const postReviewComments = async (req: Request, res: Response) => {
         `${finding.comment}${finding.suggestedFix ? `\nSuggested fix: ${finding.suggestedFix}` : ""}`
       );
     }
-
+    console.log("✅\tPosted the comments in the PR")
     return res.json({ message: "Comments posted successfully!" });
   } catch (err) {
     console.error(err);

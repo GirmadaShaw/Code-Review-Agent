@@ -20,6 +20,7 @@ export const fetchOpenPRs = async (req: Request, res: Response) => {
     }
 
     const prs = await getOpenPRs(token, owner, repo);
+    console.log("✅\tFetched all the Open PRs in the Repo")
     return res.json(prs);
   } catch (err) {
     console.error(err);
@@ -50,6 +51,7 @@ export const analyzePR = async (req: Request, res: Response) => {
     };
     const aiResponse = await analyzePRWithAI(aiInput);
     // console.log("AI response in prController: ", aiResponse);
+    console.log("✅\tGot the analysis from AI")
     return res.json(aiResponse);
   } catch (err) {
     console.error(err);
