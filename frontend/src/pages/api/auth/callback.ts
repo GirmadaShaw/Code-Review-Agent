@@ -23,7 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   const data = await tokenResponse.json();
-  console.log("Data: ", data );
   const accessToken = data.access_token;
   if (!accessToken) return res.status(400).send("Could not get access token");
   
