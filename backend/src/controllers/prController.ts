@@ -11,6 +11,7 @@ interface AIInput {
 
 
 export const fetchOpenPRs = async (req: Request, res: Response) => {
+  console.log("ℹ️\tReceived request to fetch open PRs")
   try {
     const { token, owner, repo } = req.body;
 
@@ -19,6 +20,7 @@ export const fetchOpenPRs = async (req: Request, res: Response) => {
     }
 
     const prs = await getOpenPRs(token, owner, repo);
+    console.log("✅\tFetched all the Open PRs in the Repo")
     return res.json(prs);
   } catch (err) {
     console.error(err);
@@ -27,6 +29,7 @@ export const fetchOpenPRs = async (req: Request, res: Response) => {
 };
 
 export const analyzePR = async (req: Request, res: Response) => {
+  console.log("ℹ️\tReceived request to analyze the PR")
   try {
     const { token, owner, repo, prNumber } = req.body;
 
@@ -48,6 +51,7 @@ export const analyzePR = async (req: Request, res: Response) => {
     };
     const aiResponse = await analyzePRWithAI(aiInput);
     // console.log("AI response in prController: ", aiResponse);
+    console.log("✅\tGot the analysis from AI")
     return res.json(aiResponse);
   } catch (err) {
     console.error(err);

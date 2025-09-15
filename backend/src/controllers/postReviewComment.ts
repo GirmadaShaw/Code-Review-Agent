@@ -2,6 +2,7 @@ import { postInlineComment } from "../services/githubService.js";
 import { Request, Response } from "express";
 
 export const postReviewComments = async (req: Request, res: Response) => {
+  console.log("ℹ️\tReceived request to send comments to the Repo")
   try {
     const { token, owner, repo, prNumber, headSha, aiResponse } = req.body;
 
@@ -21,7 +22,7 @@ export const postReviewComments = async (req: Request, res: Response) => {
         `${finding.comment}${finding.suggestedFix ? `\nSuggested fix: ${finding.suggestedFix}` : ""}`
       );
     }
-
+    console.log("✅\tPosted the comments in the PR")
     return res.json({ message: "Comments posted successfully!" });
   } catch (err) {
     console.error(err);
