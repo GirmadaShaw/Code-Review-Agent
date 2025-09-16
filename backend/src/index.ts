@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { reviewRouter } from "./routes/review.js";
+import { reviewRouter } from "./routes/review";
 import { issueRouter } from "./routes/issues.js";
 import { prRouter }  from "./routes/pr.js";
 
