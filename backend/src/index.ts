@@ -14,6 +14,9 @@ app.use(express.json());
 app.use("/review", reviewRouter);
 app.use("/issues", issueRouter);
 app.use("/pr", prRouter);
+app.get("/", (req, res) => {
+  res.send("The backend is live");
+});
 
 
 const PORT = process.env.PORT || 8001;
