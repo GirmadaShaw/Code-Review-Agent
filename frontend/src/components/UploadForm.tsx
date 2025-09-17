@@ -23,7 +23,7 @@ export default function UploadForm({setFindings, setSummary} : UploadFormProps) 
     const text = await file.text();
 
     try {
-        const res = await fetch("http://localhost:8000/review", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/review`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: text }),
@@ -32,7 +32,6 @@ export default function UploadForm({setFindings, setSummary} : UploadFormProps) 
         const data = await res.json();
         setFindings(data.analysis.findings || [] );
         setSummary(data.analysis.summary);
-        // console.log("✅ Code analyzed:",  data);
     } catch (err) {
         console.error("❌ Error sending code:", err);
     }
