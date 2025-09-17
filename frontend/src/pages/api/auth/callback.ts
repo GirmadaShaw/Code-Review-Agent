@@ -26,5 +26,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const accessToken = data.access_token;
   if (!accessToken) return res.status(400).send("Could not get access token");
   
-  res.redirect(`http://localhost:3000/repos?token=${accessToken}`);
+  res.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/repos?token=${accessToken}`);
 }
