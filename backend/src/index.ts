@@ -6,10 +6,14 @@ import { issueRouter } from "./routes/issues.js";
 import { prRouter }  from "./routes/pr.js";
 
 dotenv.config();
-
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: "https://code-review-agent-dusky.vercel.app",
+  methods: ["GET", "POST"],
+  credentials: true
+}));
+
+app.use(express.json({ limit: "30mb" }));
 
 app.use("/review", reviewRouter);
 app.use("/issues", issueRouter);
