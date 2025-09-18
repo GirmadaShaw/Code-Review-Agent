@@ -13,10 +13,6 @@ export default function Home() {
   const [findings, setFindings] = useState<any[]>([]);
   const [summary, setSummary] = useState<any>("");
 
-  const handleRedirect = () => {
-    window.location.href = "/redirect";
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
@@ -27,15 +23,8 @@ export default function Home() {
         </div>
         
         
-        <CodeEditor code={code} setCode={setCode} />
+        <CodeEditor setFindings={setFindings} setSummary={setSummary} />
         <UploadForm setFindings={setFindings} setSummary={setSummary} />
-
-        <button
-          onClick={handleRedirect}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-500 transition"
-        >
-          Analyze via /redirect
-        </button>
 
         <SummaryCard findings={findings} summary={summary} />
       </main>

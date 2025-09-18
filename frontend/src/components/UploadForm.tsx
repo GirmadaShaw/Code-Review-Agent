@@ -48,13 +48,19 @@ export default function UploadForm({setFindings, setSummary} : UploadFormProps) 
         type="file"
         accept=".js,.ts,.py,.java,.go,.cpp,.c,.html,.css"
         onChange={(e) => setFile(e.target.files?.[0] || null)}
-        className="file-input file-input-bordered w-full text-sm"
+        className="block w-full text-sm text-gray-300 
+    file:mr-4 file:py-2 file:px-4 
+    file:rounded-lg file:border-0 
+    file:text-sm file:font-semibold 
+    file:bg-gray-600 file:text-white
+    hover:file:bg-gray-500
+    cursor-pointer transition"
       />
       <button
         type="submit"
         className="bg-foreground text-background px-4 py-2 rounded-lg hover:opacity-80 cursor-pointer transition"
       >
-        Upload & Analyze
+        Analyze
       </button>
     </form>
   );
