@@ -12,7 +12,7 @@ export default function AboutPage() {
         </h1>
         <p className="text-lg leading-relaxed mb-6 text-gray-300">
           <strong className="text-yellow-500">Polish PR</strong> is your intelligent
-          code review assistant built to help developers ship cleaner, more
+          code review agent built to help developers ship cleaner, more
           reliable pull requests with confidence. Whether you're working solo or
           in a team, Polish PR ensures your code meets high standards before it
           ever gets merged.

@@ -30,7 +30,7 @@ export default function Home() {
           <div className="flex-grow border-t border-gray-700"></div>
         </div>
         <UploadForm setFindings={setFindings} setSummary={setSummary} />
-
+        <br /><br /><br />
         <SummaryCard findings={findings} summary={summary} />
       </main>
       <Footer />
