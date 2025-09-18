@@ -35,6 +35,8 @@ interface AIResponse {
 }
 
 export default function RepoPage() {
+     const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [dots, setDots] = useState(".");
     const [token, setToken] = useState("");
     const [repos, setRepos] = useState<Repo[]>([]);
     const [selectedRepo, setSelectedRepo] = useState<Repo | null>(null);
@@ -42,6 +44,16 @@ export default function RepoPage() {
     const [selectedPR, setSelectedPR] = useState<PR | null>(null);
     const [aiResponse, setAIResponse] = useState<AIResponse | null>(null);
     const [loading, setLoading] = useState(false);
+    
+    // Animated dots effect
+    useEffect(() => {
+        if (!isAnalyzing) return;
+        const interval = setInterval(() => {
+        setDots((prev) => (prev.length === 3 ? "." : prev + "."));
+        }, 500);
+        return () => clearInterval(interval);
+    }, [isAnalyzing]);
+
 
     // Get token from query string after OAuth redirect
     useEffect(() => {
@@ -102,27 +114,34 @@ export default function RepoPage() {
 
     // Send comments automatically using headSha
     const sendComments = async () => {
+        setIsAnalyzing(true);
         console.log("Token: ", token);
         console.log("Ai Response: ", aiResponse);
         console.log("selected Repo: ", selectedRepo);
         console.log("Selected PR: ",selectedPR);
         console.log(selectedPR?.headSha);
-        if (!aiResponse || !selectedRepo || !selectedPR) return ;
-
-        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/pr/send-comments`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                token,
-                owner: selectedRepo.owner.login,
-                repo: selectedRepo.name,
-                prNumber: selectedPR.number,
-                headSha: selectedPR.headSha,
-                aiResponse,
-            }),
-        });
+        if (!aiResponse || !selectedRepo || !selectedPR) return;
+        try {
+            await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/pr/send-comments`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    token,
+                    owner: selectedRepo.owner.login,
+                    repo: selectedRepo.name,
+                    prNumber: selectedPR.number,
+                    headSha: selectedPR.headSha,
+                    aiResponse,
+                }),
+            });
         alert("Comments sent to GitHub PR!");
-    };
+        } catch (err) {
+            console.error("❌ Error sending comments:", err);
+        } finally {
+      setIsAnalyzing(false);
+      setDots(".");
+    }
+};
 
     return (
         <div className="p-4">
@@ -209,13 +228,19 @@ export default function RepoPage() {
                             </div>
                         ))}
                     </div>
-
+                    <div className="flex justify-center" >
                     <button
                         onClick={sendComments}
-                        className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition cursor-pointer"
-                    >
-                        Send Comments to your Repo
+                        disabled={isAnalyzing}
+                        className={`mt-6 font-bold px-6 py-3 rounded-lg transition ${
+                            isAnalyzing
+                            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                            : "bg-gray-100 text-black hover:bg-gray-300 cursor-pointer"
+                        }`}
+                        >
+                        {isAnalyzing ? "Commenting in Repo..." : "Send Comments to your Repo"}
                     </button>
+                    </div>;
                 </div>
             )}
             {/* <Footer /> */}
