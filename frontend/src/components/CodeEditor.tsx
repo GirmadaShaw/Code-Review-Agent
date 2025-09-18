@@ -65,7 +65,7 @@ export default function CodeEditor({ setFindings, setSummary }: CodeEditorProps)
       <button
         onClick={handleAnalyze}
         disabled={isAnalyzing}
-        className={`px-4 py-2 rounded-lg transition self-start ${
+        className={`w-full px-4 py-2 rounded-lg transition self-start ${
           isAnalyzing
             ? "bg-gray-600 text-white cursor-not-allowed"
             : "bg-foreground text-background hover:opacity-80 cursor-pointer"
