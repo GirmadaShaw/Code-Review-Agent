@@ -24,6 +24,11 @@ export default function Home() {
         
         
         <CodeEditor setFindings={setFindings} setSummary={setSummary} />
+        <div className="flex items-center my-20">
+          <div className="flex-grow border-t border-gray-700"></div>
+          <span className="px-4 text-gray-400">OR</span>
+          <div className="flex-grow border-t border-gray-700"></div>
+        </div>
         <UploadForm setFindings={setFindings} setSummary={setSummary} />
 
         <SummaryCard findings={findings} summary={summary} />

@@ -47,7 +47,7 @@ export default function CodeEditor({ setFindings, setSummary }: CodeEditorProps)
       console.error("❌ Error analyzing code:", err);
     } finally {
       setIsAnalyzing(false);
-      setDots("."); // reset dots for next click
+      setDots(".");
     }
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface Finding {
   line: number;
@@ -15,11 +15,22 @@ interface UploadFormProps {
 
 export default function UploadForm({setFindings, setSummary} : UploadFormProps) {
   const [file, setFile] = useState<File | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [dots, setDots] = useState(".");
+
+  // Animated dots effect
+  useEffect(() => {
+      if (!isAnalyzing) return;
+      const interval = setInterval(() => {
+        setDots((prev) => (prev.length === 3 ? "." : prev + "."));
+      }, 500);
+      return () => clearInterval(interval);
+  }, [isAnalyzing]);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) return;
-
+    setIsAnalyzing(true);
     const text = await file.text();
 
     try {
@@ -34,6 +45,9 @@ export default function UploadForm({setFindings, setSummary} : UploadFormProps) 
         setSummary(data.analysis.summary);
     } catch (err) {
         console.error("❌ Error sending code:", err);
+    } finally {
+      setIsAnalyzing(false);
+      setDots(".");
     }
 };
 
@@ -48,19 +62,18 @@ export default function UploadForm({setFindings, setSummary} : UploadFormProps) 
         type="file"
         accept=".js,.ts,.py,.java,.go,.cpp,.c,.html,.css"
         onChange={(e) => setFile(e.target.files?.[0] || null)}
-        className="block w-full text-sm text-gray-300 
-    file:mr-4 file:py-2 file:px-4 
-    file:rounded-lg file:border-0 
-    file:text-sm file:font-semibold 
-    file:bg-gray-600 file:text-white
-    hover:file:bg-gray-500
-    cursor-pointer transition"
+        className="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-600 file:text-white hover:file:bg-gray-500 cursor-pointer transition"
       />
       <button
         type="submit"
-        className="bg-foreground text-background px-4 py-2 rounded-lg hover:opacity-80 cursor-pointer transition"
+        disabled={isAnalyzing}
+        className={`w-full px-4 py-2 rounded-lg transition self-start ${
+          isAnalyzing
+            ? "bg-gray-600 text-white cursor-not-allowed"
+            : "bg-foreground text-background hover:opacity-80 cursor-pointer"
+        }`}
       >
-        Analyze
+        {isAnalyzing ? `Analyzing${dots}` : "Analyze"}
       </button>
     </form>
   );
