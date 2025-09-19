@@ -8,29 +8,37 @@ const USER_KEYS = [
   "id",
   "node_id",
   "avatar_url",
+  "gravatar_id",
   "url",
   "html_url",
   "followers_url",
   "following_url",
+  "gists_url",
+  "starred_url",
+  "subscriptions_url",
+  "organizations_url",
   "repos_url",
   "events_url",
   "received_events_url",
   "type",
   "user_view_type",
+  "site_admin",
   "name",
   "company",
   "blog",
   "location",
   "email",
+  "hireable",
   "bio",
   "twitter_username",
+  "notification_email",
   "public_repos",
+  "public_gists",
   "followers",
   "following",
   "created_at",
   "updated_at",
 ];
-
 
 
 // Auth setup
@@ -49,28 +57,27 @@ const sheets = google.sheets({ version: "v4", auth });
 // Controller to save GitHub user info
 export const userInfoController = async (req: Request, res: Response) => {
   console.log("ℹ️ User Info Controller Invoked");
+
   try {
     const userData = req.body;
     console.log("ℹ️ Received user data:", userData);
 
-    if (!userData || !userData.login) {
-      return res.status(400).json({ error: "Invalid user data" });
-    }
-
-    // Map userData to row values in the correct order
-    const row = USER_KEYS.map((key) => userData[key] ?? "");
-
-    // Append as a new row
-    const response = await sheets.spreadsheets.values.append({
-      spreadsheetId: process.env.SHEET_ID,
-      range: "Sheet1!A:Z",
-      valueInputOption: "USER_ENTERED",
-      requestBody: {
-        values: [row],
-      },
+    // Ensure consistent row order by mapping each key
+    const row = USER_KEYS.map((key) => {
+      const value = userData[key];
+      // If null, undefined, or empty → store ""
+      return value !== null && value !== undefined ? String(value) : "";
     });
 
-    console.log("✅ User info written to Google Sheet!", response.data);
+    // Append row to Google Sheet
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: process.env.SHEET_ID,
+      range: "Sheet1!A:AH", // 34 columns (adjust if needed)
+      valueInputOption: "USER_ENTERED",
+      requestBody: { values: [row] },
+    });
+
+    console.log("✅ User info written to Google Sheet!");
     res.status(200).json({ message: "User info saved successfully" });
   } catch (error) {
     console.error("❌ Error writing user info:", error);
