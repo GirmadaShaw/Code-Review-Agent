@@ -23,6 +23,7 @@ Focus on:
 4. Summary Report:
    - Provide a concise summary of the code's strengths and weaknesses.
    - Include actionable remediation steps for each issue.
+  Make sure you get the errorneous line correctly and appreciate in the summary where the code is written well.
   Return JSON with keys: summary, findings[file,line,issue,severity,fix].
   Code:
   ${snippet}
@@ -57,7 +58,7 @@ export const analyzePRWithAI = async (input: AIInput): Promise<AIResponse> => {
   console.log(`ℹ️\tInvoking model: ${MODEL}`);
   const prompt = `
 You are a senior software engineer who is assigned a task to review code. Your task is to analyze the following GitHub PR and provide actionable, concise feedback for each changed file. Do NOT repeat comments. Focus on code quality, security issues, maintainability, and whether the PR addresses the linked issues. Ignore the changes in the package.json or related file. But just mention whatever comment you want to give the summary only. 
-
+ Make sure you get the errorneous line correctly and appreciate where the code is written well.
 Format your output strictly as JSON in this exact structure:
 
 {
