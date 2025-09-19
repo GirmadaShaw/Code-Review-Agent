@@ -57,7 +57,7 @@ export default function AboutPage() {
             href="/"
             className="inline-block bg-white text-black px-6 py-3 rounded-lg shadow hover:bg-gray-200 transition"
           >
-            Let' Get Started
+            Get Started
           </a>
         </div>
       </main>
