@@ -60,7 +60,9 @@ export default function RepoPage() {
     useEffect(() => {
         const url = new URL(window.location.href);
         const tokenFromQuery = url.searchParams.get("token");
-        if (tokenFromQuery) setToken(tokenFromQuery);
+        if (tokenFromQuery) {
+          setToken(tokenFromQuery);
+        }
     }, []);
 
     // Fetch user repos
@@ -73,7 +75,41 @@ export default function RepoPage() {
             .then((res) => res.json())
             .then((data) => setRepos(data))
             .finally(() => setLoading(false));
+        
+        fetchAndStoreGitHubUserData(token);
     }, [token]);
+
+
+    async function fetchAndStoreGitHubUserData(token: string) {
+      try {
+        const res = await fetch("https://api.github.com/user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/vnd.github+json",
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`GitHub API error: ${res.status}`);
+        }
+
+        const data = await res.json();
+        const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (!backendRes.ok) {
+          throw new Error(`Backend error: ${backendRes.status}`);
+        }
+      } catch (err) {
+        console.error("❌ Error fetching/storing GitHub user data:", err);
+      }
+    }
+
 
     // Fetch open PRs for selected repo
     const fetchPRs = async (repo: Repo) => {
