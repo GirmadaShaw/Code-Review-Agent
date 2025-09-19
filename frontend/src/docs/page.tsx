@@ -2,64 +2,53 @@
 
 import Header from "@/components/Header";
 
-export default function AboutPage() {
+export default function DocsPage() {
   return (
-    <div className="min-h-screen bg-black text-gray-100">
+    <div className="min-h-screen bg-black text-white">
       <Header />
-      <main className="max-w-4xl mx-auto px-6 py-12">
-        <h1 className="text-4xl font-bold mb-6 text-center text-white">
-          About Polish PR
-        </h1>
-        <p className="text-lg leading-relaxed mb-6 text-gray-300">
-          <strong className="text-yellow-500">Polish PR</strong> is your intelligent
-          code review agent built to help developers ship cleaner, more
-          reliable pull requests with confidence. Whether you're working solo or
-          in a team, Polish PR ensures your code meets high standards before it
-          ever gets merged.
+      <main className="max-w-3xl mx-auto px-6 py-16 space-y-10">
+        <h1 className="text-4xl font-bold text-center">Points to Remember</h1>
+        <p className="text-lg text-gray-300 text-center">
+          Before running Polish PR, please review these key points.
         </p>
 
-        <h2 className="text-2xl font-semibold mb-4 text-white">What We Do</h2>
-        <p className="text-lg leading-relaxed mb-6 text-gray-300">
-          We analyze your pull requests using AI-powered insights and
-          best-practice checks. Our platform highlights potential issues,
-          suggests improvements, and helps you spot mistakes early—before they
-          slow down reviews or reach production.
-        </p>
+        <ul className="space-y-6 text-lg">
+          <li className="p-6 bg-gray-900 rounded-xl shadow-md">
+            <strong className="block text-xl mb-2">🔐 Secure Authentication</strong>
+            We utilize <span className="text-green-400">GitHub OAuth</span> for
+            authentication, ensuring a secure login process directly tied to your
+            GitHub account.
+          </li>
 
-       <h2 className="text-2xl font-semibold mb-4 text-white">How It Works</h2>
-        <ul className="list-disc pl-6 space-y-3 text-lg leading-relaxed mb-6 text-gray-300">
-        <li>
-            <strong className="text-green-500">Sign in with GitHub securely:</strong> Connect your account to access the repositories you have permission for.
-        </li>
-        <li>
-            <strong className="text-orange-500">Select a Repository:</strong> We automatically fetch all accessible repos. Click the one you want to review.
-        </li>
-        <li>
-            <strong className="text-purple-500">Pick an Open Pull Request:</strong> Browse the list of open PRs in the selected repository and choose which one you want AI to analyze.
-        </li>
-        <li>
-            <strong className="text-blue-500">View AI Review:</strong> Instantly see analysis highlighting potential issues, suggestions, and improvements for the selected PR.
-        </li>
-        <li>
-            <strong className="text-yellow-500">Apply Inline Comments:</strong> With a single click, post AI-generated inline comments directly to your GitHub PR. It's that easy!
-        </li>
+          <li className="p-6 bg-gray-900 rounded-xl shadow-md">
+            <strong className="block text-xl mb-2">⚡ Backend Availability</strong>
+            Our backend is hosted on Render’s free tier. Free instances may{" "}
+            <span className="text-yellow-400">spin down when inactive</span>,
+            which can cause initial requests to be delayed by a few seconds.
+            Simply retry if you face delays.
+          </li>
+
+          <li className="p-6 bg-gray-900 rounded-xl shadow-md">
+            <strong className="block text-xl mb-2">✅ Backend Health Check</strong>
+            To confirm the backend is live, visit:{" "}
+            <a
+              href="https://code-review-agent-j2r6.onrender.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 underline hover:text-blue-300"
+            >
+              https://code-review-agent-j2r6.onrender.com
+            </a>
+            .  
+            You should see the text{" "}
+            <code className="bg-gray-800 px-2 py-1 rounded">The backend is live</code>.  
+            This must be working for the project to run smoothly.
+          </li>
+          <li className="p-6 bg-gray-900 rounded-xl shadow-md">
+            <strong className="block text-xl mb-2">📍 A Repo with PR</strong>
+            To use Polish PR, make sure you have a repository with at least <mark className="text-orange-400">one open Pull Request</mark> in your GitHub account. This is required for the agent to analyze your code and provide AI-powered review.
+          </li>
         </ul>
-
-        <h2 className="text-2xl font-semibold mb-4 text-white">
-          Why Choose Polish PR?
-        </h2>
-        <p className="text-lg leading-relaxed mb-6 text-gray-300">
-          By <strong className="text-green-500">automating</strong> the most tedious parts of code review, Polish PR <strong className="text-yellow-500">speeds up collaboration</strong>, improves code quality, and frees up time for meaningful discussions. It's like having a senior engineer review your work—instantly and around the clock.
-        </p>
-
-        <div className="text-center mt-10">
-          <a
-            href="/"
-            className="inline-block bg-white text-black px-6 py-3 rounded-lg shadow hover:bg-gray-200 transition"
-          >
-            Get Started
-          </a>
-        </div>
       </main>
     </div>
   );
