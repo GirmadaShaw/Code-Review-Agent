@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -11,8 +11,8 @@
   --color-foreground: var(--foreground);
 
   /* 👇 replace Geist with Inter + Fira Code */
-  --font-sans: 'Inter', sans-serif;
-  --font-mono: 'Fira Code', monospace;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Fira Code", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,6 +28,34 @@ body {
   font-family: var(--font-sans);
 }
 
-code, pre, .monaco-editor {
+code,
+pre,
+.monaco-editor {
   font-family: var(--font-mono) !important;
+}
+
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  color: #514b82;
+  background: conic-gradient(from 90deg at 3px 3px, #0000 90deg, currentColor 0) -3px -3px /
+    calc(50% + 1.5px) calc(50% + 1.5px);
+  animation: l28 2s infinite;
+}
+.loader::before,
+.loader::after {
+  content: "";
+  grid-area: 1/1;
+  background: repeating-conic-gradient(#0000 0 35deg, currentColor 0 90deg);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 0);
+  border-radius: 50%;
+}
+.loader::after {
+  margin: 20%;
+}
+@keyframes l28 {
+  100% {
+    transform: rotate(1turn);
+  }
 }

@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { convertSegmentPathToStaticExportFilename } from "next/dist/shared/lib/segment-cache/segment-value-encoding";
 
+
 interface Repo {
     name: string;
     owner: { login: string };
@@ -136,7 +137,7 @@ export default function RepoPage() {
             });
         alert("Comments sent to GitHub PR!");
         } catch (err) {
-            console.error("❌ Error sending comments:", err);
+            console.error("❌ Error sending comments");
         } finally {
       setIsAnalyzing(false);
       setDots(".");
@@ -144,106 +145,109 @@ export default function RepoPage() {
 };
 
     return (
-        <div className="p-4">
-            <Header />
-            {
-                selectedRepo ? "" 
-                            : <h1 className="text-2xl font-bold mb-6 mt-6">Select a Repo to Review PRs</h1>
-            }
-            
+       <div className="flex flex-col min-h-screen">
+  {/* Header + Content */}
+  <div className="flex-grow p-4">
+    <Header />
+    {
+      selectedRepo ? "" 
+                  : <h1 className="text-2xl font-bold mb-6 mt-6">Select a Repo to Review PRs</h1>
+    }
 
-            {loading && <p>Loading...</p>}
+    {loading && <div className="loader"></div>}
 
-            {/* Step 1: Select Repo */}
-            {!selectedRepo && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {repos.map((repo) => (
-                        <div
-                            key={repo.name}
-                            className="border p-4 rounded-lg shadow hover:shadow-lg cursor-pointer"
-                            onClick={() => fetchPRs(repo)}
-                        >
-                            <h2 className="text-xl font-semibold">{repo.name}</h2>
-                            <p className="text-gray-600">{repo.description}</p>
-                            <p className="text-sm text-gray-400">
-                                Owner: {repo.owner.login} | {repo.private ? "Private" : "Public"}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            )}
+    {/* Step 1: Select Repo */}
+    {!selectedRepo && (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {repos.map((repo) => (
+          <div
+            key={repo.name}
+            className="border p-4 rounded-lg shadow hover:shadow-lg cursor-pointer"
+            onClick={() => fetchPRs(repo)}
+          >
+            <h2 className="text-xl font-semibold">{repo.name}</h2>
+            <p className="text-gray-600">{repo.description}</p>
+            <p className="text-sm text-gray-400">
+              Owner: {repo.owner.login} | {repo.private ? "Private" : "Public"}
+            </p>
+          </div>
+        ))}
+      </div>
+    )}
 
-            {/* Step 2: Select PR */}
-            {selectedRepo && !selectedPR && (
-                <div className="mt-6">
-                    {
-                    prs.length === 0 && !loading ? <h2 className="text-2xl font-bold mb-4">No open PRs found in this repo</h2>
-                                     :  <h2 className="text-2xl font-bold mb-4">Select a PR to Analyze</h2>
-                    }
-                    <div className="space-y-4">
-                        {prs.map((pr) => (
-                            <div
-                                key={pr.number}
-                                className="border p-4 rounded-lg shadow hover:bg-gray-90 cursor-pointer"
-                                onClick={() => analyzePR(pr)}
-                            >
-                                <p>
-                                    <strong>PR #{pr.number}:</strong> {pr.title}
-                                </p>
-                                <p>
-                                    <strong>Author:</strong> {pr.author} | <strong>Branch:</strong>{" "}
-                                    {pr.head} → {pr.base}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            {/* Step 3: Show AI Review */}
-            {selectedPR && aiResponse && (
-                <div className="mt-6 p-4">
-                    <h2 className="text-3xl font-bold mb-4">AI Review for PR #{selectedPR.number}</h2>
-                    <div className="bg-gray-20 p-4 rounded-lg shadow mb-6">{aiResponse.summary}</div>
-
-                    <h3 className="text-2xl font-semibold mb-2">File Findings</h3>
-                    <div className="space-y-4">
-                        {aiResponse.findings.map((f, idx) => (
-                            <div
-                                key={idx}
-                                className="border-l-4 p-4 rounded shadow hover:bg-gray-20 transition"
-                            >
-                                <p>
-                                    <strong>File:</strong> {f.file} | <strong>Line:</strong> {f.line} |{" "}
-                                    <strong>Severity:</strong> {f.severity}
-                                </p>
-                                <p>
-                                    <strong>Comment:</strong> {f.comment}
-                                </p>
-                                {f.suggestedFix && (
-                                    <p className="text-blue-600">
-                                        <strong>Suggested Fix:</strong> {f.suggestedFix}
-                                    </p>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex justify-center" >
-                    <button
-                        onClick={sendComments}
-                        disabled={isAnalyzing}
-                        className={`mt-6 font-bold px-6 py-3 rounded-lg transition ${
-                            isAnalyzing
-                            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                            : "bg-gray-100 text-black hover:bg-gray-300 cursor-pointer"
-                        }`}
-                        >
-                        {isAnalyzing ? "Commenting in Repo..." : "Send Comments to your Repo"}
-                    </button>
-                    </div>;
-                </div>
-            )}
-            {/* <Footer /> */}
+    {/* Step 2: Select PR */}
+    {selectedRepo && !selectedPR && (
+      <div className="mt-6">
+        {prs.length === 0 && !loading 
+          ? <h2 className="text-2xl font-bold mb-4">No open PRs found in this repo</h2>
+          : <h2 className="text-2xl font-bold mb-4">Select a PR to Analyze</h2>
+        }
+        <div className="space-y-4">
+          {prs.map((pr) => (
+            <div
+              key={pr.number}
+              className="border p-4 rounded-lg shadow hover:bg-gray-90 cursor-pointer"
+              onClick={() => analyzePR(pr)}
+            >
+              <p>
+                <strong>PR #{pr.number}:</strong> {pr.title}
+              </p>
+              <p>
+                <strong>Author:</strong> {pr.author} | <strong>Branch:</strong>{" "}
+                {pr.head} → {pr.base}
+              </p>
+            </div>
+          ))}
         </div>
+      </div>
+    )}
+
+    {/* Step 3: Show AI Review */}
+    {selectedPR && aiResponse && (
+      <div className="mt-6 p-4">
+        <h2 className="text-3xl font-bold mb-4">AI Review for PR #{selectedPR.number}</h2>
+        <div className="bg-gray-20 p-4 rounded-lg shadow mb-6">{aiResponse.summary}</div>
+
+        <h3 className="text-2xl font-semibold mb-2">File Findings</h3>
+        <div className="space-y-4">
+          {aiResponse.findings.map((f, idx) => (
+            <div
+              key={idx}
+              className="border-l-4 p-4 rounded shadow hover:bg-gray-20 transition"
+            >
+              <p>
+                <strong>File:</strong> {f.file} | <strong>Line:</strong> {f.line} |{" "}
+                <strong>Severity:</strong> {f.severity}
+              </p>
+              <p>
+                <strong>Comment:</strong> {f.comment}
+              </p>
+              {f.suggestedFix && (
+                <p className="text-blue-600">
+                  <strong>Suggested Fix:</strong> {f.suggestedFix}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center">
+          <button
+            onClick={sendComments}
+            disabled={isAnalyzing}
+            className={`mt-6 font-bold px-6 py-3 rounded-lg transition ${
+              isAnalyzing
+                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                : "bg-gray-100 text-black hover:bg-gray-300 cursor-pointer"
+            }`}
+          >
+            {isAnalyzing ? "Commenting in Repo..." : "Send Comments to your Repo"}
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+  <Footer />
+</div>
+
     );
 }
