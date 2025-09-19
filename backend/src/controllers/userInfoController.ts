@@ -3,6 +3,36 @@ import { google } from "googleapis";
 import dotenv from 'dotenv';
 dotenv.config();  
 
+const USER_KEYS = [
+  "login",
+  "id",
+  "node_id",
+  "avatar_url",
+  "url",
+  "html_url",
+  "followers_url",
+  "following_url",
+  "repos_url",
+  "events_url",
+  "received_events_url",
+  "type",
+  "user_view_type",
+  "name",
+  "company",
+  "blog",
+  "location",
+  "email",
+  "bio",
+  "twitter_username",
+  "public_repos",
+  "followers",
+  "following",
+  "created_at",
+  "updated_at",
+];
+
+
+
 // Auth setup
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -18,32 +48,19 @@ const sheets = google.sheets({ version: "v4", auth });
 
 // Controller to save GitHub user info
 export const userInfoController = async (req: Request, res: Response) => {
-    console.log("ℹ️\tUser Info Controller Invoked")
+  console.log("ℹ️ User Info Controller Invoked");
   try {
-    const userData = req.body; 
-    console.log("ℹ️\tReceived user data:", userData);
+    const userData = req.body;
+    console.log("ℹ️ Received user data:", userData);
+
     if (!userData || !userData.login) {
       return res.status(400).json({ error: "Invalid user data" });
     }
-    // Map the userData to a row
-    const row = [
-      userData.login,
-      userData.id,
-      userData.node_id,
-      userData.avatar_url,
-      userData.html_url,
-      userData.name,
-      userData.company,
-      userData.blog,
-      userData.location,
-      userData.email,
-      userData.bio,
-      userData.public_repos,
-      userData.followers,
-      userData.following,
-      new Date().toISOString(),
-    ];
 
+    // Map userData to row values in the correct order
+    const row = USER_KEYS.map((key) => userData[key] ?? "");
+
+    // Append as a new row
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.SHEET_ID,
       range: "Sheet1!A:Z",
@@ -52,11 +69,12 @@ export const userInfoController = async (req: Request, res: Response) => {
         values: [row],
       },
     });
-    console.log("✅ User info written to Google Sheet!", response);
 
+    console.log("✅ User info written to Google Sheet!", response.data);
     res.status(200).json({ message: "User info saved successfully" });
   } catch (error) {
     console.error("❌ Error writing user info:", error);
     res.status(500).json({ error: "Failed to save user info" });
   }
 };
+
