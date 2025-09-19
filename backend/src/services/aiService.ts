@@ -58,7 +58,7 @@ export const analyzePRWithAI = async (input: AIInput): Promise<AIResponse> => {
   console.log(`ℹ️\tInvoking model: ${MODEL}`);
   const prompt = `
 You are a senior software engineer who is assigned a task to review code. Your task is to analyze the following GitHub PR and provide actionable, concise feedback for each changed file. Do NOT repeat comments. Focus on code quality, security issues, maintainability, and whether the PR addresses the linked issues. Ignore the changes in the package.json or related file. But just mention whatever comment you want to give the summary only. 
- Make sure you get the errorneous line correctly and appreciate where the code is written well.
+Make sure you get the errorneous line correctly and appreciate the code the person has written the code well.
 Format your output strictly as JSON in this exact structure:
 
 {
