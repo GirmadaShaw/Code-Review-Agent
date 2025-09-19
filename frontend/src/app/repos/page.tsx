@@ -150,11 +150,15 @@ export default function RepoPage() {
   <div className="flex-grow p-4">
     <Header />
     {
-      selectedRepo ? "" 
-                  : <h1 className="text-2xl font-bold mb-6 mt-6">Select a Repo to Review PRs</h1>
+      selectedRepo 
+                    ? "" 
+                    : <div className="flex flex-col items-center justify-center mt-6"> 
+                       <h1 className="text-4xl font-bold mb-6 mt-6">Select a Repo to Review PRs</h1>
+                        {loading && <div className="loader"></div>}
+                     </div>
     }
 
-    {loading && <div className="loader"></div>}
+    
 
     {/* Step 1: Select Repo */}
     {!selectedRepo && (
@@ -179,8 +183,13 @@ export default function RepoPage() {
     {selectedRepo && !selectedPR && (
       <div className="mt-6">
         {prs.length === 0 && !loading 
-          ? <h2 className="text-2xl font-bold mb-4">No open PRs found in this repo</h2>
-          : <h2 className="text-2xl font-bold mb-4">Select a PR to Analyze</h2>
+          ? <div className="flex flex-col items-center justify-center mb-4"> 
+                <h2 className="text-4xl font-bold mb-4">No open PRs found in this repo</h2> 
+            </div>
+          : <div className="flex flex-col items-center justify-center mb-4">
+                <h2 className="text-4xl font-bold mb-4">Select a PR to Analyze</h2>
+                <div className="loader"></div>
+            </div>
         }
         <div className="space-y-4">
           {prs.map((pr) => (
