@@ -188,7 +188,7 @@ export default function RepoPage() {
             </div>
           : <div className="flex flex-col items-center justify-center mb-4">
                 <h2 className="text-4xl font-bold mb-4">Select a PR to Analyze</h2>
-                <div className="loader"></div>
+                {loading && <div className="loader"></div>}
             </div>
         }
         <div className="space-y-4">
