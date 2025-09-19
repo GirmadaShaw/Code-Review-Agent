@@ -46,7 +46,8 @@ export default function DocsPage() {
           </li>
           <li className="p-6 bg-gray-900 rounded-xl shadow-md">
             <strong className="block text-xl mb-2">📍 A Repo with PR</strong>
-            To use Polish PR, make sure you have a repository with at least <span className="text-orange-400">one open Pull Request</span> in your GitHub account. This is required for the agent to analyze your code and provide AI-powered review.
+            
+            To use Polish PR, make sure you have a repository with at least <span  className="text-orange-400">one open Pull Request</span> in your GitHub account. This is required for the agent to analyze your code and provide AI-powered review.
           </li>
         </ul>
       </main>
