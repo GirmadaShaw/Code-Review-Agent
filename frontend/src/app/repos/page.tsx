@@ -253,7 +253,7 @@ export default function RepoPage() {
         <h2 className="text-3xl font-bold mb-4">AI Review for PR #{selectedPR.number}</h2>
         <div className="bg-gray-20 p-4 rounded-lg shadow mb-6">{aiResponse.summary}</div>
 
-        <h3 className="text-2xl font-semibold mb-2">Findings :-</h3>
+        <h3 className="text-2xl font-semibold mb-2">Things to Note :-</h3>
         <div className="space-y-4">
           {aiResponse.findings.map((f, idx) => (
             <div

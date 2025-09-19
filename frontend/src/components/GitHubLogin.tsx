@@ -7,7 +7,7 @@ export default function GitHubLogin() {
         href="/api/auth/login"
         className="bg-white text-black font-bold px-6 py-3 rounded-lg hover:bg-gray-300 transition"
       >
-        Sign in with GitHub
+        Login with GitHub
       </a>
     </div>
   );

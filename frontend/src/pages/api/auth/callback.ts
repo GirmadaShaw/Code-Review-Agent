@@ -6,9 +6,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const clientId = process.env.GITHUB_CLIENT_ID;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
-  if (!code) return res.status(400).send("No code provided");
+  if (!code) return res.status(400).send("Missing Code !");
 
-  // Exchange code for access token
   const tokenResponse = await fetch(`https://github.com/login/oauth/access_token`, {
     method: "POST",
     headers: {
