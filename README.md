@@ -118,6 +118,7 @@ Backend: [http://localhost:8000](http://localhost:8000)
 
 * **Upload a code file** for review.
 * **Write code in the editor** and get live AI feedback.
+* Authorize GitHub and get your **PRs reviewed**.
 
 ---
 
