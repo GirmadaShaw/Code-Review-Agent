@@ -9,10 +9,20 @@ export async function reviewController(req: Request, res: Response) {
   try {
     console.log("ℹ️\tCalling AI service")
     const analysis = await reviewCode(code);
+    let parsedAnalysis;
+    if (typeof analysis === "string") {
+      try {
+        parsedAnalysis = JSON.parse(analysis);
+      } catch {
+        parsedAnalysis = { summary: "Invalid JSON", findings: [] };
+      }
+    } else {
+      parsedAnalysis = analysis;
+    }
     res.json({ 
       status: "success",
       message: "Code reviewed successfully",
-      "analysis": JSON.parse(analysis!)
+      analysis: parsedAnalysis
     });
     console.log("✅\tGot the response from AI service")
     return;

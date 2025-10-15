@@ -41,6 +41,7 @@ export default function CodeEditor({ setFindings, setSummary }: CodeEditorProps)
       });
 
       const data = await res.json();
+      console.log("DATA: ", data);
       setFindings(data.analysis.findings || []);
       setSummary(data.analysis.summary || "");
     } catch (err) {

@@ -28,10 +28,15 @@ Focus on:
   Code:
   ${snippet}
   `;
-  const result = await model.generateContent(prompt);
-  return result.response.candidates?.[0]?.content.parts.map(p => p.text).join("")
+  try{
+    const result = await model.generateContent(prompt);  
+    return result.response.candidates?.[0]?.content.parts.map(p => p.text).join("")
                                                                         .replace(/^```json\s*|\s*```$/g, "")
-                                                                        .slice(0, -4);
+                                                                       .slice(0, -4);
+  }catch(error){
+    console.log("ℹ️\tModel isn't responding")
+    return {summary:"We are working on it", findings: [{file: "received", line: "checked", issue:"gemini-1.5-flash model",severity:"high", fix:"Reach out to Paramveer"}]}
+  }
 }
 
 
