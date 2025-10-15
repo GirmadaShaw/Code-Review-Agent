@@ -30,12 +30,14 @@ app.get("/", (req, res) => {
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Zoo Management Backend</title>
+      <link rel="icon" href="frontend\\src\\app\\favicon.ico" type="image/x-icon" />
+      <title>Grace's Secret</title>
+
       <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900 flex items-center justify-center text-center text-white font-sans">
       <div class="max-w-lg p-8 rounded-2xl shadow-2xl bg-slate-800/70 backdrop-blur-sm border border-slate-700">
-        <h1 class="text-4xl font-bold mb-4 text-blue-400"> 🩻Code Review Agent🩻 </h1>
+        <h1 class="text-4xl font-bold mb-4 text-blue-400"> 🩻Grace's Secret🩻 </h1>
         <p class="text-lg text-gray-300 mb-6">The backend is live and running smoothly 🚀</p>
         <div class="animate-pulse text-green-400 font-semibold">
           ● Server Online
